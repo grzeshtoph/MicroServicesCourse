@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Created on 10/20/17.
  */
-@RestController
+//@RestController
 public class TeamController {
 
     @Autowired
