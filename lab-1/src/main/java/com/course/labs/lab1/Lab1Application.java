@@ -1,6 +1,7 @@
 package com.course.labs.lab1;
 
 import com.course.labs.lab1.dao.TeamRepository;
+import com.course.labs.lab1.domain.Player;
 import com.course.labs.lab1.domain.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -9,8 +10,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class Lab1Application extends SpringBootServletInitializer {
@@ -38,18 +40,14 @@ public class Lab1Application extends SpringBootServletInitializer {
 
 	@PostConstruct
 	public void init() {
-		List<Team> list = new ArrayList<>();
+		Set<Player> players = new HashSet<>();
+		players.add(new Player().name("Big Easy").position("Showman"));
+		players.add(new Player().name("Buckets").position("Guard"));
+		players.add(new Player().name("Dizzy").position("Guard"));
 
-		Team team = new Team();
-		team.setLocation("Harlem");
-		team.setName("Globetrotters");
-		list.add(team);
-
-		team = new Team();
-		team.setLocation("Washington");
-		team.setName("Generals");
-		list.add(team);
-
-		teamRepository.save(list);
+		teamRepository.save(Arrays.asList(
+				new Team().location("Harlem").name("Globetrotters").players(players),
+				new Team().location("Washington").name("Generals"))
+		);
 	}
 }

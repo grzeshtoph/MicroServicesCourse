@@ -1,8 +1,7 @@
 package com.course.labs.lab1.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created on 10/20/17.
@@ -13,6 +12,7 @@ public class Team {
     private String name;
     private String location;
     private String mascot;
+    private Set<Player> players;
 
     @Id
     @GeneratedValue
@@ -46,5 +46,40 @@ public class Team {
 
     public void setMascot(String mascot) {
         this.mascot = mascot;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teamId")
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
+
+    public Team id(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Team name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Team location(String location) {
+        this.location = location;
+        return this;
+    }
+
+    public Team mascot(String mascot) {
+        this.mascot = mascot;
+        return this;
+    }
+
+    public Team players(Set<Player> players) {
+        this.players = players;
+        return this;
     }
 }
