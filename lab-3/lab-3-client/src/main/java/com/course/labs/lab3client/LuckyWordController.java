@@ -10,8 +10,11 @@ public class LuckyWordController {
     @Value("${lucky-word}")
     private String luckyWord;
 
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
+
     @GetMapping("/lucky-word")
     public String showLuckyWord() {
-        return "The lucky word is " + luckyWord;
+        return "The lucky word is " + luckyWord + " (profile " + activeProfile + ")";
     }
 }
