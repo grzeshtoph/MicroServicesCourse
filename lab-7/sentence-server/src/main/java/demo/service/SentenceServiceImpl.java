@@ -1,6 +1,6 @@
 package demo.service;
 
-import demo.dao.*;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import demo.domain.Sentence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,25 +13,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class SentenceServiceImpl implements SentenceService {
     @Autowired
-    private VerbClient verbService;
-    @Autowired
-    private SubjectClient subjectService;
-    @Autowired
-    private ArticleClient articleService;
-    @Autowired
-    private AdjectiveClient adjectiveService;
-    @Autowired
-    private NounClient nounClient;
+    private WordService wordService;
 
     /**
      * Assemble a sentence by gathering random words of each part of speech:
      */
+    @HystrixCommand(fallbackMethod = "criticalErrorSentence")
     public Sentence buildSentence() {
         return new Sentence(String.format("%s %s %s %s %s.",
-                subjectService.getWord().getString(),
-                verbService.getWord().getString(),
-                articleService.getWord().getString(),
-                adjectiveService.getWord().getString(),
-                nounClient.getWord().getString()));
+                wordService.getSubject().getString(),
+                wordService.getVerb().getString(),
+                wordService.getArticle().getString(),
+                wordService.getAdjective().getString(),
+                wordService.getNoun().getString()));
+    }
+
+    public Sentence criticalErrorSentence() {
+        return new Sentence("Critical error when building a sentence.");
     }
 }
